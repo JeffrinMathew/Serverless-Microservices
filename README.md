@@ -4,18 +4,17 @@
 
 ![High Level Design](./img/Microservices.png)
 
-Create Lambda IAM Role
-
 Create the execution role that gives your function permission to access AWS resources.
 
 To create an execution role
-Open the roles page in the IAM console.
-Choose Create role.
-Create a role with the following properties.
-Trusted entity – Lambda.
-Role name – lambda-apigateway-role.
-Permissions – Custom policy with permission to DynamoDB and CloudWatch Logs. This custom policy has the permissions that the function needs to write data to DynamoDB and upload logs.
-```json
+
+1. Open the roles page in the IAM console.
+2. Choose Create role.
+3. Create a role with the following properties.
+    * Trusted entity – Lambda.
+    * Role name – **lambda-apigateway-role**.
+    * Permissions – Custom policy with permission to DynamoDB and CloudWatch Logs. This custom policy has the permissions that  the function needs to write data to DynamoDB and upload logs. 
+    ```json
     {
     "Version": "2012-10-17",
     "Statement": [
@@ -46,25 +45,19 @@ Permissions – Custom policy with permission to DynamoDB and CloudWatch Logs. T
     }
     ```
 
-Create Lambda Function
+### Create Lambda Function
 
-To create the function
+**To create the function**
+1. Click "Create function" in AWS Lambda Console
 
-    Click "Create function" in AWS Lambda Console
+2. Select "Author from scratch". Use name **LambdaFunctionOverHttps** , select **Python 3.7** as Runtime. Under Permissions, select "Use an existing role", and select **lambda-apigateway-role** that we created, from the drop down
 
-Create function
+3. Click "Create function"
 
-    Select "Author from scratch". Use name LambdaFunctionOverHttps , select Python 3.7 as Runtime. Under Permissions, select "Use an existing role", and select lambda-apigateway-role that we created, from the drop down
+4. Replace the boilerplate coding with the following code snippet and click "Save"
 
-    Click "Create function"
-
-Lambda basic information
-
-    Replace the boilerplate coding with the following code snippet and click "Save"
-
-Example Python Code
-
-``python
+**Example Python Code**
+```python
 from __future__ import print_function
 
 import boto3
@@ -103,18 +96,15 @@ def lambda_handler(event, context):
         raise ValueError('Unrecognized operation "{}"'.format(operation))
 ```
 
-Lambda Code
-Test Lambda Function
+
+### Test Lambda Function
 
 Let's test our newly created function. We haven't created DynamoDB and the API yet, so we'll do a sample echo operation. The function should output whatever input we pass.
+1. Click the arrow on "Select a test event" and click "Configure test events"
 
-    Click the arrow on "Select a test event" and click "Configure test events"
 
-Configure test events
-
-    Paste the following JSON into the event. The field "operation" dictates what the lambda function will perform. In this case, it'd simply return the payload from input event as output. Click "Create" to save
-    
-``json
+2. Paste the following JSON into the event. The field "operation" dictates what the lambda function will perform. In this case, it'd simply return the payload from input event as output. Click "Create" to save
+```json
 {
     "operation": "echo",
     "payload": {
@@ -123,84 +113,85 @@ Configure test events
     }
 }
 ```
+!
 
-Save test event
+3. Click "Test", and it will execute the test event. You should see the output in the console
 
-    Click "Test", and it will execute the test event. You should see the output in the console
-
-Execute test event
 
 We're all set to create DynamoDB table and an API using our lambda as backend!
-Create DynamoDB Table
+
+### Create DynamoDB Table
 
 Create the DynamoDB table that the Lambda function uses.
 
-To create a DynamoDB table
+**To create a DynamoDB table**
 
-Open the DynamoDB console.
-Choose Create table.
-Create a table with the following settings.
-Table name – lambda-apigateway
-Primary key – id (string)
-Choose Create.
+1. Open the DynamoDB console.
+2. Choose Create table.
+3. Create a table with the following settings.
+   * Table name – lambda-apigateway
+   * Primary key – id (string)
+4. Choose Create.
 
-create DynamoDB table
-Create API
+### Create API
 
-To create the API
+**To create the API**
+1. Go to API Gateway console
+2. Click Create API
 
-    Go to API Gateway console
-    Click Create API
+3. Scroll down and select "Build" for REST API
 
-create API
+4. Give the API name as "DynamoDBOperations", keep everything as is, click "Create API"
 
-Scroll down and select "Build" for REST API
-
-Build REST API
-
-Give the API name as "DynamoDBOperations", keep everything as is, click "Create API"
-
-Create REST API
-
-Each API is collection of resources and methods that are integrated with backend HTTP endpoints, Lambda functions, or other AWS services. Typically, API resources are organized in a resource tree according to the application logic. At this time you only have the root resource, but let's add a resource next
+5. Each API is collection of resources and methods that are integrated with backend HTTP endpoints, Lambda functions, or other AWS services. Typically, API resources are organized in a resource tree according to the application logic. At this time you only have the root resource, but let's add a resource next 
 
 Click "Actions", then click "Create Resource"
 
-Create API resource
+6. Input "DynamoDBManager" in the Resource Name, Resource Path will get populated. Click "Create Resource"
 
-Input "DynamoDBManager" in the Resource Name, Resource Path will get populated. Click "Create Resource"
+7. Let's create a POST Method for our API. With the "/dynamodbmanager" resource selected, Click "Actions" again and click "Create Method". 
 
-Create resource
+8. Select "POST" from drop down , then click checkmark
 
-Let's create a POST Method for our API. With the "/dynamodbmanager" resource selected, Click "Actions" again and click "Create Method".
+9. The integration will come up automatically with "Lambda Function" option selected. Select "LambdaFunctionOverHttps" function that we created earlier. As you start typing the name, your function name will show up.Select and click "Save". A popup window will come up to add resource policy to the lambda to be invoked by this API. Click "Ok"
 
-Create resource method
-
-Select "POST" from drop down , then click checkmark
-
-Create resource method
-
-The integration will come up automatically with "Lambda Function" option selected. Select "LambdaFunctionOverHttps" function that we created earlier. As you start typing the name, your function name will show up.Select and click "Save". A popup window will come up to add resource policy to the lambda to be invoked by this API. Click "Ok"
-
-Create lambda integration
 
 Our API-Lambda integration is done!
-Deploy the API
+
+### Deploy the API
 
 In this step, you deploy the API that you created to a stage called prod.
 
- Click "Actions", select "Deploy API"
+1. Click "Actions", select "Deploy API"
 
-Deploy API
+2. Now it is going to ask you about a stage. Select "[New Stage]" for "Deployment stage". Give "Prod" as "Stage name". Click "Deploy"
 
-Now it is going to ask you about a stage. Select "[New Stage]" for "Deployment stage". Give "Prod" as "Stage name". Click "Deploy"
+3. We're all set to run our solution! To invoke our API endpoint, we need the endpoint url. In the "Stages" screen, expand the stage "Prod", select "POST" method, and copy the "Invoke URL" from screen
 
-Deploy API to Prod Stage
 
-Running our solution
 
-The Lambda function supports using the create operation to create an item in your DynamoDB table. To request this operation, use the following JSON in the Api-Gateway Test:
-    
+
+### Running our solution
+
+1. The Lambda function supports using the create operation to create an item in your DynamoDB table. To request this operation, use the following JSON:
+
+```json
+{
+    "operation": "create",
+    "tableName": "lambda-apigateway",
+    "payload": {
+        "Item": {
+            "id": "1234ABCD",
+            "number": 5
+        }
+    }
+}
+```
+
+
+
+To get all the inserted items from the table, we can use the "list" operation of Lambda using the same API. Pass the following JSON to the API, and it will return all the items from the Dynamo table
+
 
 
 ```json
