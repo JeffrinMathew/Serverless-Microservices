@@ -221,4 +221,4 @@ The following is a sample request payload for a DynamoDB read item operation:
 The above JSON will create record Bob and the Second JSON will read the value and return Bob.
 
 
-*This was done by referring to AWS Documentation and Special help from Senior Solutions Architect CloudwithRaj*
+**This was done by referring to AWS Documentation and special help from Senior Solutions Architect CloudwithRaj**
