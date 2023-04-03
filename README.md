@@ -99,7 +99,6 @@ def lambda_handler(event, context):
 
 ### Test Lambda Function
 
-Let's test our newly created function. We haven't created DynamoDB and the API yet, so we'll do a sample echo operation. The function should output whatever input we pass.
 1. Click the arrow on "Select a test event" and click "Configure test events"
 
 
@@ -117,8 +116,6 @@ Let's test our newly created function. We haven't created DynamoDB and the API y
 
 3. Click "Test", and it will execute the test event. You should see the output in the console
 
-
-We're all set to create DynamoDB table and an API using our lambda as backend!
 
 ### Create DynamoDB Table
 
@@ -143,13 +140,12 @@ Create the DynamoDB table that the Lambda function uses.
 
 4. Give the API name as "DynamoDBOperations", keep everything as is, click "Create API"
 
-5. Each API is collection of resources and methods that are integrated with backend HTTP endpoints, Lambda functions, or other AWS services. Typically, API resources are organized in a resource tree according to the application logic. At this time you only have the root resource, but let's add a resource next 
-
+5. Each API is collection of resources and methods that are integrated with backend HTTP endpoints, Lambda functions, or other AWS services. 
 Click "Actions", then click "Create Resource"
 
 6. Input "DynamoDBManager" in the Resource Name, Resource Path will get populated. Click "Create Resource"
-
-7. Let's create a POST Method for our API. With the "/dynamodbmanager" resource selected, Click "Actions" again and click "Create Method". 
+7. 
+8. Let's create a POST Method for our API. With the "/dynamodbmanager" resource selected, Click "Actions" again and click "Create Method". 
 
 8. Select "POST" from drop down , then click checkmark
 
@@ -166,7 +162,7 @@ In this step, you deploy the API that you created to a stage called prod.
 
 2. Now it is going to ask you about a stage. Select "[New Stage]" for "Deployment stage". Give "Prod" as "Stage name". Click "Deploy"
 
-3. We're all set to run our solution! To invoke our API endpoint, we need the endpoint url. In the "Stages" screen, expand the stage "Prod", select "POST" method, and copy the "Invoke URL" from screen
+3. In the "Stages" screen, expand the stage "Prod", select "POST" method, and copy the "Invoke URL" from screen
 
 
 
