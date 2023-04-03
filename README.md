@@ -207,4 +207,4 @@ Running our solution
 }
 
 
-*This was done by referring to AWS Documentation and Special help from Senior Soulutions Architect CloudwithRaj*
+*This was done by referring to AWS Documentation and Special help from Senior Solutions Architect CloudwithRaj*
