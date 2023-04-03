@@ -1,4 +1,4 @@
-(./img/Microservice.png)
+(./img/Microservices.png)
 
 # Serverless-lab
 Create Lambda IAM Role
