@@ -1,6 +1,8 @@
-(./img/Microservices.png)
+
 
 # Serverless-lab
+
+![High Level Design](./img/Microservices.png)
 Create Lambda IAM Role
 
 Create the execution role that gives your function permission to access AWS resources.
