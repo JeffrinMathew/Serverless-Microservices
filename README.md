@@ -64,6 +64,7 @@ Lambda basic information
 
 Example Python Code
 
+
 from __future__ import print_function
 
 import boto3
@@ -100,6 +101,9 @@ def lambda_handler(event, context):
         return operations[operation](event.get('payload'))
     else:
         raise ValueError('Unrecognized operation "{}"'.format(operation))
+        
+        
+        
 
 Lambda Code
 Test Lambda Function
@@ -111,6 +115,7 @@ Let's test our newly created function. We haven't created DynamoDB and the API y
 Configure test events
 
     Paste the following JSON into the event. The field "operation" dictates what the lambda function will perform. In this case, it'd simply return the payload from input event as output. Click "Create" to save
+    
 
 {
     "operation": "echo",
@@ -119,6 +124,7 @@ Configure test events
         "somekey2": "somevalue2"
     }
 }
+
 
 Save test event
 
@@ -199,6 +205,7 @@ Copy Invoke Url
 Running our solution
 
     The Lambda function supports using the create operation to create an item in your DynamoDB table. To request this operation, use the following JSON:
+    
 
 {
     "operation": "create",
@@ -210,6 +217,7 @@ Running our solution
         }
     }
 }
+
 
 
 *This was done by referring to AWS Documentation and Special help from Senior Solutions Architect CloudwithRaj*
